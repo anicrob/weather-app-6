@@ -1,0 +1,35 @@
+:root {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: 12px;
+    background-color: white;
+}
+heading p {
+    color:white;
+    background: #301D8F;
+    background: linear-gradient(to left, #301D8F 33%, #5634FF 74%);
+    font-size: 1.5rem;
+    height:100px;
+}
+aside {
+    display: block;
+}
+.searchBtn{
+    color:white;
+    background-color:#8f99fb;
+    display: block;
+    
+}
+.cityBtn {
+    color:black;
+    background-color: lightgrey;
+}
+.section-city-btns {
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.search-area {
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+}
