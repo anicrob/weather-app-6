@@ -20,9 +20,8 @@ function init(){
 function getAPI(event){
     event.preventDefault();
     city = $(".city-input-box").val();
-    cityList = cityList.push(city);
+    cityList.push(city);
     localStorage.setItem("city", JSON.stringify(cityList));
-    init();
     console.log(city);
 
     var todayRequestURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + apiKey + "&units=imperial"
