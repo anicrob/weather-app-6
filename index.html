@@ -17,27 +17,27 @@
         <aside class="col-12 col-md-5 col-lg-3 m-3">
             <div class="search-area ms-3 me-3">
                 <p class="fw-bold fs-3">Search for a City</p>
-                <input type="text" placeholder="San Diego"></input>
+                <input class = "city-input-box" type="text" placeholder="San Diego"></input>
                 <button class="searchBtn mt-3 border-0 lh-lg">Search</button>
             </div>
             <hr>
             <div class="section-city-btns">
-                <button class="mt-4 lh-lg cityBtn d-block rounded border-0">Atlanta</button>
+                <!-- <button class="mt-4 lh-lg cityBtn d-block rounded border-0">Atlanta</button>
                 <button class="mt-4 lh-lg cityBtn d-block rounded border-0">Denver</button>
                 <button class="mt-4 lh-lg cityBtn d-block rounded border-0">Seattle</button>
                 <button class="mt-4 lh-lg cityBtn d-block rounded border-0">San Francisco</button>
                 <button class="mt-4 lh-lg cityBtn d-block rounded border-0">Orlando</button>
                 <button class="mt-4 lh-lg cityBtn d-block rounded border-0">New York</button>
                 <button class="mt-4 lh-lg cityBtn d-block rounded border-0">Chicago</button>
-                <button class="mt-4 lh-lg cityBtn d-block rounded border-0">Austin</button>
+                <button class="mt-4 lh-lg cityBtn d-block rounded border-0">Austin</button> -->
             </div>
         </aside>
-        <main class="main-temp-info col-12 col-md-7 col-lg-9 m-3 d-flex flex-column d-block">
+        <main class="main-temp-info col-12 col-md-7 col-lg-9 m-3">
             <div class="weather-dashboard-info border border-dark">
                 <p class="fw-bold fs-2 ms-3"><span>Test City</span> <span>Date </span><span class="weather-emoji">Emoji</span></p>
-                <p class="ms-3">Temp: <span></span></p>
-                <p class="ms-3">Wind: <span></span></p>
-                <p class="ms-3">Humidity: <span></span>%</p>
+                <p class="ms-3">Temp: <span id="today-temperature"></span></p>
+                <p class="ms-3">Wind: <span id ="today-wind"></span></p>
+                <p class="ms-3">Humidity: <span id="today-humidity"></span></p>
             </div>
             <div>
                 <p class="fw-bold fs-2 mt-2">5-Day Forecast:</p>
@@ -45,5 +45,7 @@
             </div>
         </main>
     </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="./Assets/script.js"></script>
 </body>
 </html>
