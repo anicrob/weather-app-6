@@ -41,7 +41,7 @@ aside {
 }
 /* custom formatting of the weather tiles */
 .weathertile{
-    background-color: #32288f;
+    background-color: #323d4f;
     display:flex;
     flex-direction: column;
     width: 150px;
