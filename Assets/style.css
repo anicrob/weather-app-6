@@ -33,3 +33,26 @@ aside {
     flex-direction:column;
     justify-content:center;
 }
+.weathertile{
+    background-color: #32288f;
+    display:flex;
+    flex-direction: column;
+    width: 150px;
+    height: 200px;
+}
+main{
+    display:flex;
+    flex-direction: column;
+    margin-right: 200px;
+}
+.day-icon{
+    height: 20px;
+    width: 20px;
+}
+
+@media screen and (max-width: 767px) {
+    main {
+      display:block;
+      width:100%;
+    }
+  }
