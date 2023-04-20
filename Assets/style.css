@@ -1,8 +1,10 @@
+/* custom formatting of the root */
 :root {
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     font-size: 12px;
     background-color: white;
 }
+/* custom formatting of the heading paragraph  */
 heading p {
     color:white;
     background: #301D8F;
@@ -10,29 +12,34 @@ heading p {
     font-size: 1.5rem;
     height:100px;
 }
+/* custom formatting of the aside */
 aside {
     display: block;
 }
+/* custom formatting of the search button */
 .searchBtn{
     color:white;
     background-color:#8f99fb;
     display: block;
-    
 }
+/* custom formatting of the city buttons */
 .cityBtn {
     color:black;
     background-color: lightgrey;
 }
+/* custom formatting of the city button section */
 .section-city-btns {
     display:flex;
     flex-direction: column;
     justify-content: center;
 }
+/* custom formatting of the search area */
 .search-area {
     display:flex;
     flex-direction:column;
     justify-content:center;
 }
+/* custom formatting of the weather tiles */
 .weathertile{
     background-color: #32288f;
     display:flex;
@@ -40,16 +47,18 @@ aside {
     width: 150px;
     height: 200px;
 }
+/* custom formatting of the main section */
 main{
     display:flex;
     flex-direction: column;
     margin-right: 200px;
 }
+/* custom formatting of the day-icons */
 .day-icon{
     height: 30px;
     width: 30px;
 }
-
+/* media query to fill in the gaps where bootstrap couldn't */
 @media screen and (max-width: 767px) {
     main {
       display:block;
