@@ -15,7 +15,7 @@ function init(){
         cityList = JSON.parse(cityList);
         //create a button per item
         for (var i=0; i<cityList.length; + i++){
-           var newBtn = $("<button class='mt-4 lh-lg cityBtn d-block rounded border-0' data-index='i'>" + cityList[i] + "</button>")
+           var newBtn = $("<button class='mt-4 lh-lg cityBtn d-block rounded border-0' data-index=" +i + ">" + cityList[i] + "</button>")
            //append the button to the buton section
            $(".section-city-btns").append(newBtn);
         }
@@ -75,15 +75,19 @@ function getAPI(event){
                 .then(function (data) {
                     // Use the console to examine the response
                     console.log(data);  
+                    //filter the data to only provide 5 days at 15:00:00
                     const eveningDataValue= data.list.filter(function(currentDay){
                         return currentDay.dt_txt.endsWith("15:00:00")
                     })
+                    //use console to examine new responses
                     console.log(eveningDataValue);
                     //for each list item (day/time timestamp), create weather tiles, with the proper data
                     for (var i=0; i< eveningDataValue.length; i++){
+                        //first get the date and make it the proper format
                         var getDate = eveningDataValue[i].dt_txt.split(' ')[0]
                         var tempDate = new Date(getDate);
                         var properFormattedCurrentDate = [tempDate.getMonth() + 1, tempDate.getDate() + 1, tempDate.getFullYear()].join('/');
+                        //create weather tiles
                         var weatherTile = $(
                             "<div class='weathertile border'>" +
                             "<p class='text-white fs-3'>" + properFormattedCurrentDate + "</p>" +
