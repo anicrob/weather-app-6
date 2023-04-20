@@ -23,9 +23,9 @@ function init(){
     } else {
         cityList = [];
     }
-    console.log($(".section-city-btns").children.length);
-    if($(".section-city-btns").children.length > 5){
-        $(".section-city-btns").empty();
+    //if there's 5 or more cities, clear local storage - this is so there's never more than 5 buttons
+    if(cityList.length >= 5){
+        localStorage.clear();
     }
 }
 //gets API data
@@ -107,6 +107,77 @@ function getAPI(event){
                 
             })
 }
+$(".section-city-btns").on("click",".cityBtn",function(){
+    //empty the five-day-forecast-section
+    $(".five-day-forecast-section").empty();
+    //set the city to the button's value/text   
+    city = $(this).text();
+//define the request URL for the today info
+    var todayRequestURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + apiKey + "&units=imperial"
+    // console.log(todayRequestURL);
+    //fetch the today URL
+    fetch(todayRequestURL)
+        .then(function (response) {
+            //turn it into JSON
+            return response.json();
+        })
+        .then(function (data) {
+            // Use the console to examine the response
+            console.log(data);
+            //set the today dashboard info
+            $("#today-temperature").text(data.main.temp + "° F");
+            $("#today-wind").text(data.wind.speed + " MPH");
+            $("#today-humidity").text(data.main.humidity + "%");
+            $("#city-name").text(data.name);
+            $("#today-date").text(new Date().toLocaleDateString());
+            //how to set the image
+            var iconURL= data.weather[0].icon
+            $(".weather-emoji").attr("src","http://openweathermap.org/img/w/" + iconURL + ".png");
+            //grab the coordinates to use in the next fetch
+            cityLon = data.coord.lon;
+            cityLat = data.coord.lat;
+            //define the fivedayRequestURL variable
+             var fivedayRequestURL = "https://api.openweathermap.org/data/2.5/forecast?lat=" + cityLat + "&lon="+ cityLon + "&appid=" + apiKey + "&units=imperial";            
+             //fetch it
+             fetch(fivedayRequestURL)
+                .then(function (response) {
+                    return response.json();
+                })
+                .then(function (data) {
+                    // Use the console to examine the response
+                    console.log(data);  
+                    //filter the data to only provide 5 days at 15:00:00
+                    const eveningDataValue= data.list.filter(function(currentDay){
+                        return currentDay.dt_txt.endsWith("15:00:00")
+                    })
+                    //use console to examine new responses
+                    console.log(eveningDataValue);
+                    //for each list item (day/time timestamp), create weather tiles, with the proper data
+                    for (var i=0; i< eveningDataValue.length; i++){
+                        //first get the date and make it the proper format
+                        var getDate = eveningDataValue[i].dt_txt.split(' ')[0]
+                        var tempDate = new Date(getDate);
+                        var properFormattedCurrentDate = [tempDate.getMonth() + 1, tempDate.getDate() + 1, tempDate.getFullYear()].join('/');
+                        //create weather tiles
+                        var weatherTile = $(
+                            "<div class='weathertile border'>" +
+                            "<p class='text-white fs-3'>" + properFormattedCurrentDate + "</p>" +
+                            "<img alt='weather icon' class='day-icon'>" +
+                            "<p class='ms-2 text-white'>" + "Temp:" + eveningDataValue[i].main.temp + "° F" + "</p>" +
+                            "<p class='ms-2 text-white'>" + "Wind:" + eveningDataValue[i].wind.speed + " MPH" + "</p>" +
+                            "<p class='ms-2 text-white'>" + "Humidity:" + eveningDataValue[i].main.humidity + "%" + "</p>" +
+                            "</div>")
+                        //this is for the weather icon
+                        var iconURL = eveningDataValue[i].weather[0].icon
+                        $(".day-icon").attr("src", "http://openweathermap.org/img/w/" + iconURL + ".png");
+                    //append the tiles to the tile section
+                    $(".five-day-forecast-section").append(weatherTile);
+                    }
+
+                }) 
+                
+            })
+})
 //event listener for the search button
 $(".searchBtn").on("click", getAPI);
 //call init() function on page refresh
