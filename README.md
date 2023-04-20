@@ -15,4 +15,4 @@ All code created by anicrob. Used OpenWeather.org API to get the weather data al
 ## Link to Repo and Deployed Application
 Repo Link: https://github.com/anicrob/weather-app-6
 
-Deployed Application: 
+Deployed Application: https://anicrob.github.io/weather-app-6/ 
