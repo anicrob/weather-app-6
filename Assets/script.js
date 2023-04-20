@@ -23,6 +23,10 @@ function init(){
     } else {
         cityList = [];
     }
+    console.log($(".section-city-btns").children.length);
+    if($(".section-city-btns").children.length > 5){
+        $(".section-city-btns").empty();
+    }
 }
 //gets API data
 function getAPI(event){
@@ -48,13 +52,13 @@ function getAPI(event){
         })
         .then(function (data) {
             // Use the console to examine the response
-            // console.log(data);
+            console.log(data);
             //set the today dashboard info
             $("#today-temperature").text(data.main.temp + "° F");
             $("#today-wind").text(data.wind.speed + " MPH");
             $("#today-humidity").text(data.main.humidity + "%");
             $("#city-name").text(data.name);
-            $("#today-date").text("4-19-23");
+            $("#today-date").text(new Date().toLocaleDateString());
             //how to set the image
             var iconURL= data.weather[0].icon
             $(".weather-emoji").attr("src","http://openweathermap.org/img/w/" + iconURL + ".png");
@@ -70,25 +74,31 @@ function getAPI(event){
                 })
                 .then(function (data) {
                     // Use the console to examine the response
-                    // console.log(data);  
+                    console.log(data);  
+                    const eveningDataValue= data.list.filter(function(currentDay){
+                        return currentDay.dt_txt.endsWith("15:00:00")
+                    })
+                    console.log(eveningDataValue);
                     //for each list item (day/time timestamp), create weather tiles, with the proper data
-                    for (var i=0; i< data.list.length; i++){
+                    for (var i=0; i< eveningDataValue.length; i++){
+                        var getDate = eveningDataValue[i].dt_txt.split(' ')[0]
+                        var tempDate = new Date(getDate);
+                        var properFormattedCurrentDate = [tempDate.getMonth() + 1, tempDate.getDate() + 1, tempDate.getFullYear()].join('/');
                         var weatherTile = $(
                             "<div class='weathertile border'>" +
-                            "<p class='text-white fs-3'>" + data.list[i].dt_txt + "</p>" +
-                            "<img class='day-icon' alt='Weather icon' />" +
-                            "<p class='ms-3 text-white'>" + "Temp:" + data.list[i].main.temp + "° F" + "</p>" +
-                            "<p class='ms-3 text-white'>" + "Wind:" + data.list[i].wind.speed + " MPH" + "</p>" +
-                            "<p class='ms-3 text-white'>" + "Humidity:" + data.list[i].main.humidity + "%" + "</p>" +
+                            "<p class='text-white fs-3'>" + properFormattedCurrentDate + "</p>" +
+                            "<img alt='weather icon' class='day-icon'>" +
+                            "<p class='ms-2 text-white'>" + "Temp:" + eveningDataValue[i].main.temp + "° F" + "</p>" +
+                            "<p class='ms-2 text-white'>" + "Wind:" + eveningDataValue[i].wind.speed + " MPH" + "</p>" +
+                            "<p class='ms-2 text-white'>" + "Humidity:" + eveningDataValue[i].main.humidity + "%" + "</p>" +
                             "</div>")
                         //this is for the weather icon
-                        var iconURL = data.list[i].weather[0].icon
-                        $(".day-icon").each(function(){
-                            $(this).attr("src", "http://openweathermap.org/img/w/" + iconURL + ".png");
-                    })
+                        var iconURL = eveningDataValue[i].weather[0].icon
+                        $(".day-icon").attr("src", "http://openweathermap.org/img/w/" + iconURL + ".png");
                     //append the tiles to the tile section
                     $(".five-day-forecast-section").append(weatherTile);
                     }
+
                 }) 
                 
             })
