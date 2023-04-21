@@ -5,12 +5,13 @@
     background-color: white;
 }
 /* custom formatting of the heading paragraph  */
-heading p {
+heading {
     color:white;
     background: #301D8F;
     background: linear-gradient(to left, #301D8F 33%, #5634FF 74%);
     font-size: 1.5rem;
     height:100px;
+    width:100%;
 }
 /* custom formatting of the aside */
 aside {
@@ -58,10 +59,3 @@ main{
     height: 30px;
     width: 30px;
 }
-/* media query to fill in the gaps where bootstrap couldn't */
-@media screen and (max-width: 767px) {
-    main {
-      display:block;
-      width:100%;
-    }
-  }
