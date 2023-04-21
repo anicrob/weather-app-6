@@ -2,8 +2,18 @@
 var apiKey = "0de6000030553e472206e763ef224694";
 var city;
 var cityList;
+
 //on page refresh
 function init(){
+    renderSearchHistory();
+    //if there's 5 or more cities, clear local storage - this is so there's never more than 5 buttons
+    if(cityList.length >= 5){
+        localStorage.clear();
+    }
+}
+
+function renderSearchHistory() {
+    $(".city-input-box").val('');
     //get city from local storage
     cityList = localStorage.getItem("city");
     // console.log(typeof(cityList));
@@ -13,19 +23,16 @@ function init(){
         cityList = JSON.parse(cityList);
         //create a button per item
         for (var i=0; i<cityList.length; + i++){
-           var newBtn = $("<button class='mt-4 lh-lg cityBtn d-block rounded border-0' data-index=" +i + ">" + cityList[i] + "</button>")
-           //append the button to the buton section
-           $(".section-city-btns").append(newBtn);
+            var newBtn = $("<button class='mt-4 lh-lg cityBtn d-block rounded border-0' data-index=" +i + ">" + cityList[i] + "</button>")
+            //append the button to the buton section
+            $(".section-city-btns").append(newBtn);
         }
     //else (it's empty), set it to an empty array
     } else {
         cityList = [];
     }
-    //if there's 5 or more cities, clear local storage - this is so there's never more than 5 buttons
-    if(cityList.length >= 5){
-        localStorage.clear();
-    }
 }
+
 //gets API data
 function getTodayCityWeather(city){
     //define the request URL for the today info
@@ -55,6 +62,7 @@ function getTodayCityWeather(city){
             createWeatherTiles(cityLon, cityLat);
         })
 }
+
 createWeatherTiles(cityLon, cityLat){
     //define the fivedayRequestURL variable
     var fivedayRequestURL = "https://api.openweathermap.org/data/2.5/forecast?lat=" + cityLat + "&lon="+ cityLon + "&appid=" + apiKey + "&units=imperial";            
@@ -109,70 +117,17 @@ $(".searchBtn").on("click", function(event){
        event.preventDefault();
        //empty the five-day-forecast-section
        $(".five-day-forecast-section").empty();
-       //empty the search button
-       $(".city-input-box").empty();
         //set the city to the value inputted
-        city = $(".city-input-box").val();
-        //push that value into the cityList array
-        cityList.push(city);
-        //turn it into a string and set it to local storage
-        localStorage.setItem("city", JSON.stringify(cityList));
-        //pass city value to getTodayCityWeather function
-        getTodayCityWeather(city);
-
+        if($(".city-input-box").val()){
+            city = $(".city-input-box").val();
+            //push that value into the cityList array
+            cityList.push(city);
+            //turn it into a string and set it to local storage
+            localStorage.setItem("city", JSON.stringify(cityList));
+            //pass city value to getTodayCityWeather function
+            getTodayCityWeather(city);
+        }
+        renderSearchHistory();
 });
 //call init() function on page refresh
 init();
-//one function with the city name - invoke second function
-//another one for lat and long for weather tiles 5 day forecast
-
-//init - gets local storage history to render it - needs to be a separate function
-//also need to render when you click on search - like a new search - append
-
-//function renderSearchHistory() {
-//     searchHistoryContainer.innerHTML = '';
-
-//     // Start at end of history array and count down to show the most recent at the top.
-//     for (var i = searchHistory.length - 1; i >= 0; i--) {
-//       var btn = document.createElement('button');
-//       btn.setAttribute('type', 'button');
-//       btn.setAttribute('aria-controls', 'today forecast');
-//       btn.classList.add('history-btn', 'btn-history');
-  
-//       // `data-search` allows access to city name when click handler is invoked
-//       btn.setAttribute('data-search', searchHistory[i]);
-//       btn.textContent = searchHistory[i];
-//       searchHistoryContainer.append(btn);
-//     }
-//   }
-// function appendToHistory(search) {
-//     // If there is no search term return the function
-//     if (searchHistory.indexOf(search) !== -1) {
-//       return;
-//     }
-//     searchHistory.push(search);
-  
-//     localStorage.setItem('search-history', JSON.stringify(searchHistory));
-//     renderSearchHistory();
-//   }
-//   function initSearchHistory() {
-//     var storedHistory = localStorage.getItem('search-history');
-//     if (storedHistory) {
-//       searchHistory = JSON.parse(storedHistory);
-//     }
-//     renderSearchHistory();
-//   }
-
-// searchHistoryContainer.addEventListener('click', handleSearchHistoryClick);
-
-//   function handleSearchHistoryClick(e) {
-//     // Don't do search if current elements is not a search history button
-//     if (!e.target.matches('.btn-history')) {
-//       return;
-//     }
-  
-//     var btn = e.target;
-//     var search = btn.getAttribute('data-search');
-//     fetchCoords(search);
-//   }
-
