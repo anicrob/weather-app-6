@@ -87,17 +87,22 @@ function getAPI(event){
                         var getDate = eveningDataValue[i].dt_txt.split(' ')[0]
                         var tempDate = new Date(getDate);
                         var properFormattedCurrentDate = [tempDate.getMonth() + 1, tempDate.getDate() + 1, tempDate.getFullYear()].join('/');
+                        //this is for the weather icon
+                        var iconURL = eveningDataValue[i].weather[0].icon
                         //create weather tiles
                         var weatherTile = $(
                             "<div class='weathertile border'>" +
                             "<p class='text-white fs-3'>" + properFormattedCurrentDate + "</p>" +
-                            "<img alt='weather icon' class='day-icon'>" +
+                            `<img alt='weather icon' class='day-icon' src="http://openweathermap.org/img/w/${iconURL}.png">` +
                             "<p class='ms-2 text-white'>" + "Temp:" + eveningDataValue[i].main.temp + "° F" + "</p>" +
                             "<p class='ms-2 text-white'>" + "Wind:" + eveningDataValue[i].wind.speed + " MPH" + "</p>" +
                             "<p class='ms-2 text-white'>" + "Humidity:" + eveningDataValue[i].main.humidity + "%" + "</p>" +
                             "</div>")
-                        //this is for the weather icon
-                        var iconURL = eveningDataValue[i].weather[0].icon
+                        console.log(eveningDataValue[i]);
+                        console.log('>>>>>>>>>>', iconURL);
+                        console.log('>>>> click here: ', "http://openweathermap.org/img/w/" + iconURL + ".png")
+                        console.log("icon chosen:>>>>>", $(".day-icon"))
+
                         $(".day-icon").attr("src", "http://openweathermap.org/img/w/" + iconURL + ".png");
                     //append the tiles to the tile section
                     $(".five-day-forecast-section").append(weatherTile);
