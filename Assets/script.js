@@ -5,18 +5,19 @@ var cityList;
 
 //on page refresh
 function init(){
+    //get search history buttons
     renderSearchHistory();
-    //if there's 5 or more cities, clear local storage - this is so there's never more than 5 buttons
+    //if there's 5 or more cities, clear local storage - this is so there's never more than 5 buttons - need to refresh twice
     if(cityList.length >= 5){
         localStorage.clear();
     }
 }
-
+//this renders the search history buttons
 function renderSearchHistory() {
     $(".city-input-box").val('');
+    $(".section-city-btns").empty();
     //get city from local storage
     cityList = localStorage.getItem("city");
-    // console.log(typeof(cityList));
     //if it exists
     if (cityList){
         //parse it
@@ -33,11 +34,10 @@ function renderSearchHistory() {
     }
 }
 
-//gets API data
+//populates the city's weather for today
 function getTodayCityWeather(city){
     //define the request URL for the today info
     var todayRequestURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + apiKey + "&units=imperial"
-    // console.log(todayRequestURL);
     //fetch the today URL
     fetch(todayRequestURL)
         .then(function (response) {
@@ -45,8 +45,6 @@ function getTodayCityWeather(city){
             return response.json();
         })
         .then(function (data) {
-            // Use the console to examine the response
-            console.log(data);
             //set the today dashboard info
             $("#today-temperature").text(data.main.temp + "° F");
             $("#today-wind").text(data.wind.speed + " MPH");
@@ -63,7 +61,7 @@ function getTodayCityWeather(city){
         })
 }
 
-createWeatherTiles(cityLon, cityLat){
+function createWeatherTiles(cityLon, cityLat){
     //define the fivedayRequestURL variable
     var fivedayRequestURL = "https://api.openweathermap.org/data/2.5/forecast?lat=" + cityLat + "&lon="+ cityLon + "&appid=" + apiKey + "&units=imperial";            
     //fetch it
@@ -72,14 +70,10 @@ createWeatherTiles(cityLon, cityLat){
         return response.json();
     })
     .then(function (data) {
-            // Use the console to examine the response
-            // console.log(data);  
             //filter the data to only provide 5 days at 15:00:00
             const eveningDataValue= data.list.filter(function(currentDay){
                 return currentDay.dt_txt.endsWith("15:00:00")
         })
-        //use console to examine new responses
-        console.log(eveningDataValue);
         //for each list item (day/time timestamp), create weather tiles, with the proper data
         for (var i=0; i< eveningDataValue.length; i++){
             //first get the date and make it the proper format
@@ -88,7 +82,6 @@ createWeatherTiles(cityLon, cityLat){
             var properFormattedCurrentDate = [tempDate.getMonth() + 1, tempDate.getDate() + 1, tempDate.getFullYear()].join('/');
             //this is for the weather icon
             var iconURL = eveningDataValue[i].weather[0].icon
-            // console.log(iconURL);
             //create weather tiles
             var weatherTile = $(
                 "<div class='weathertile border'>" +
@@ -109,6 +102,7 @@ $(".section-city-btns").on("click",".cityBtn",function(){
     $(".five-day-forecast-section").empty();
     //set the city to the button's value/text   
     city = $(this).text();
+    //call getTodayCityWeather funtion with the city input
     getTodayCityWeather(city);
 })
 //event listener for the search button
@@ -127,6 +121,7 @@ $(".searchBtn").on("click", function(event){
             //pass city value to getTodayCityWeather function
             getTodayCityWeather(city);
         }
+        //add on the search item to the search buttons
         renderSearchHistory();
 });
 //call init() function on page refresh
